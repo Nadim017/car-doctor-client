@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import img from '../../assets/images/login/login.svg';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const SignUp = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, logOut } = useContext(AuthContext);
+  const goTo = useNavigate();
   const handleSignUp = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -15,6 +16,8 @@ const SignUp = () => {
     createUser(email, password)
       .then((result) => {
         const user = result.user;
+
+        logOut().then(goTo('/login'));
         console.log(user);
       })
       .catch((error) => console.log(error));
